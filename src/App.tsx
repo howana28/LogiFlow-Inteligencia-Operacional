@@ -3,13 +3,14 @@ import {
   Route,
   Routes,
 } from 'react-router-dom'
-import { AppLayout } from './layouts/AppLayout'
-import { MapaEstoque } from './pages/MapaEstoque'
-import { ModulePage } from './pages/ModulePage'
 import {
   administrationNavigation,
   modules,
 } from './config/navigation'
+import { AppLayout } from './layouts/AppLayout'
+import { MapaEstoque } from './pages/MapaEstoque'
+import { ModulePage } from './pages/ModulePage'
+import { PosicoesAtuais } from './pages/PosicoesAtuais'
 
 function App() {
   return (
@@ -40,11 +41,21 @@ function App() {
           element={<MapaEstoque />}
         />
 
+        <Route
+          path="/estoque/posicoes"
+          element={<PosicoesAtuais />}
+        />
+
         {modules.flatMap((module) =>
           module.items
             .filter(
               (item) =>
-                item.path !== '/estoque/mapa',
+                ![
+                  '/estoque/mapa',
+                  '/estoque/posicoes',
+                ].includes(
+                  item.path,
+                ),
             )
             .map((item) => (
               <Route
@@ -52,8 +63,12 @@ function App() {
                 path={item.path}
                 element={
                   <ModulePage
-                    eyebrow={item.eyebrow}
-                    title={item.title}
+                    eyebrow={
+                      item.eyebrow
+                    }
+                    title={
+                      item.title
+                    }
                     description={
                       item.description
                     }
