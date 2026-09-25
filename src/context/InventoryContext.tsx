@@ -34,12 +34,22 @@ interface StockWithdrawalInput {
   reason: string
 }
 
+interface StockTransferInput {
+  sku: string
+  origin: string
+  destination: string
+  quantity: number
+  responsible: string
+  reason: string
+}
+
 interface InventoryContextValue {
   products: Product[]
   positions: InventoryPosition[]
   movements: InventoryMovement[]
   registerEntry: (input: StockEntryInput) => void
   registerWithdrawal: (input: StockWithdrawalInput) => void
+  registerTransfer: (input: StockTransferInput) => void
   resetInventoryDemo: () => void
 }
 
@@ -48,6 +58,8 @@ const POSITIONS_STORAGE_KEY =
 
 const MOVEMENTS_STORAGE_KEY =
   'logiflow-demo-inventory-movements'
+
+const DEFAULT_POSITION_CAPACITY = 60
 
 const InventoryContext =
   createContext<InventoryContextValue | null>(null)
@@ -302,6 +314,199 @@ export function InventoryProvider({
     ])
   }
 
+  function registerTransfer(
+    input: StockTransferInput,
+  ) {
+    if (
+      !input.quantity ||
+      input.quantity <= 0
+    ) {
+      throw new Error(
+        'Informe uma quantidade válida para transferência.',
+      )
+    }
+
+    if (
+      input.origin === input.destination
+    ) {
+      throw new Error(
+        'A posição de destino deve ser diferente da origem.',
+      )
+    }
+
+    const product = products.find(
+      (item) => item.sku === input.sku,
+    )
+
+    if (!product) {
+      throw new Error(
+        'Produto não encontrado.',
+      )
+    }
+
+    const originPosition =
+      positions.find(
+        (position) =>
+          position.position ===
+            input.origin &&
+          position.sku === input.sku,
+      )
+
+    if (!originPosition) {
+      throw new Error(
+        'A posição de origem não possui este SKU.',
+      )
+    }
+
+    if (
+      input.quantity >
+      originPosition.quantity
+    ) {
+      throw new Error(
+        `Há apenas ${originPosition.quantity} unidades disponíveis na origem.`,
+      )
+    }
+
+    const destinationPosition =
+      positions.find(
+        (position) =>
+          position.position ===
+          input.destination,
+      )
+
+    if (
+      destinationPosition &&
+      destinationPosition.sku !== input.sku
+    ) {
+      throw new Error(
+        `A posição ${input.destination} já está ocupada por ${destinationPosition.sku}.`,
+      )
+    }
+
+    const destinationCapacity =
+      destinationPosition?.capacity ??
+      DEFAULT_POSITION_CAPACITY
+
+    const destinationQuantity =
+      destinationPosition?.quantity ?? 0
+
+    if (
+      destinationQuantity +
+        input.quantity >
+      destinationCapacity
+    ) {
+      const available =
+        destinationCapacity -
+        destinationQuantity
+
+      throw new Error(
+        `A posição ${input.destination} comporta apenas mais ${available} unidades.`,
+      )
+    }
+
+    setPositions((current) => {
+      const origin =
+        current.find(
+          (position) =>
+            position.position ===
+              input.origin &&
+            position.sku === input.sku,
+        )
+
+      if (!origin) {
+        return current
+      }
+
+      const destination =
+        current.find(
+          (position) =>
+            position.position ===
+            input.destination,
+        )
+
+      const remainingOrigin =
+        origin.quantity -
+        input.quantity
+
+      let next = current
+        .map((position) => {
+          if (
+            position.id === origin.id
+          ) {
+            return {
+              ...position,
+              quantity:
+                remainingOrigin,
+            }
+          }
+
+          if (
+            destination &&
+            position.id ===
+              destination.id
+          ) {
+            return {
+              ...position,
+              quantity:
+                position.quantity +
+                input.quantity,
+            }
+          }
+
+          return position
+        })
+        .filter(
+          (position) =>
+            position.quantity > 0,
+        )
+
+      if (!destination) {
+        const location =
+          getLocationFromPosition(
+            input.destination,
+          )
+
+        next = [
+          ...next,
+          {
+            id: createId('pos'),
+            zone: location.zone,
+            street: location.street,
+            position:
+              input.destination,
+            sku: input.sku,
+            quantity:
+              input.quantity,
+            capacity:
+              DEFAULT_POSITION_CAPACITY,
+          },
+        ]
+      }
+
+      return next
+    })
+
+    const movement: InventoryMovement = {
+      id: createId('mov'),
+      sku: input.sku,
+      type: 'TRANSFERÊNCIA',
+      quantity: input.quantity,
+      origin: input.origin,
+      destination:
+        input.destination,
+      responsible:
+        input.responsible,
+      reason: input.reason,
+      createdAt:
+        new Date().toISOString(),
+    }
+
+    setMovements((current) => [
+      movement,
+      ...current,
+    ])
+  }
+
   function resetInventoryDemo() {
     setPositions(
       seedInventoryPositions.map(
@@ -327,6 +532,7 @@ export function InventoryProvider({
       movements,
       registerEntry,
       registerWithdrawal,
+      registerTransfer,
       resetInventoryDemo,
     }),
     [positions, movements],

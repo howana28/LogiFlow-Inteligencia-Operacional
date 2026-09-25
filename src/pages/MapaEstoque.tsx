@@ -8,6 +8,7 @@ import {
   X,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { TransferenciaEstoqueModal } from '../components/TransferenciaEstoqueModal'
 import { useInventory } from '../context/InventoryContext'
 import type { InventoryPosition } from '../types/logistics'
 import './MapaEstoque.css'
@@ -22,6 +23,11 @@ type SelectedPosition = {
   code: string
   street: string
   data?: InventoryPosition
+}
+
+type TransferTarget = {
+  sku: string
+  position: string
 }
 
 const streets: StreetConfig[] = [
@@ -99,6 +105,9 @@ export function MapaEstoque() {
 
   const [actionMessage, setActionMessage] =
     useState<string | null>(null)
+
+  const [transferTarget, setTransferTarget] =
+    useState<TransferTarget | null>(null)
 
   function getProduct(sku?: string) {
     if (!sku) {
@@ -198,6 +207,23 @@ export function MapaEstoque() {
       code,
       data,
     })
+  }
+
+  function openTransfer() {
+    if (!selectedPosition?.data) {
+      return
+    }
+
+    setTransferTarget({
+      sku: selectedPosition.data.sku,
+      position:
+        selectedPosition.data.position,
+    })
+  }
+
+  function handleTransferSuccess() {
+    setTransferTarget(null)
+    closeDrawer()
   }
 
   const filteredStreetSummaries =
@@ -921,7 +947,7 @@ export function MapaEstoque() {
                         className="secondary-action"
                         onClick={() =>
                           setActionMessage(
-                            'O histórico completo deste SKU será exibido no módulo de movimentações.',
+                            'O histórico completo deste SKU está disponível no módulo de movimentações.',
                           )
                         }
                       >
@@ -931,10 +957,8 @@ export function MapaEstoque() {
                       <button
                         type="button"
                         className="secondary-action"
-                        onClick={() =>
-                          setActionMessage(
-                            'A transferência entre posições será implementada junto ao fluxo de movimentações.',
-                          )
+                        onClick={
+                          openTransfer
                         }
                       >
                         Transferir
@@ -996,6 +1020,21 @@ export function MapaEstoque() {
             )}
           </aside>
         </div>
+      )}
+
+      {transferTarget && (
+        <TransferenciaEstoqueModal
+          sku={transferTarget.sku}
+          origin={
+            transferTarget.position
+          }
+          onClose={() =>
+            setTransferTarget(null)
+          }
+          onSuccess={
+            handleTransferSuccess
+          }
+        />
       )}
     </section>
   )
