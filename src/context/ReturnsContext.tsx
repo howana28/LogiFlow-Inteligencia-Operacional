@@ -10,6 +10,7 @@ import {
   returns as seedReturns,
 } from '../data/mockData'
 import type {
+  ReturnConferenceOutcome,
   ReturnRecord,
 } from '../types/logistics'
 
@@ -20,6 +21,14 @@ interface CreateReturnInput {
   reason: string
 }
 
+interface FinalizeReturnInput {
+  outcome: ReturnConferenceOutcome
+  position?: string
+  quantity?: number
+  responsible: string
+  note?: string
+}
+
 interface ReturnsContextValue {
   returns: ReturnRecord[]
   createReturn: (
@@ -28,6 +37,10 @@ interface ReturnsContextValue {
   updateReturnStatus: (
     id: string,
     status: ReturnRecord['status'],
+  ) => void
+  finalizeReturn: (
+    id: string,
+    input: FinalizeReturnInput,
   ) => void
   resetReturnsDemo: () => void
 }
@@ -156,6 +169,51 @@ export function ReturnsProvider({
     )
   }
 
+  function finalizeReturn(
+    id: string,
+    input: FinalizeReturnInput,
+  ) {
+    if (!input.responsible.trim()) {
+      throw new Error(
+        'Informe o responsável pela conferência.',
+      )
+    }
+
+    if (
+      input.outcome === 'REINTEGRADO' &&
+      (!input.position ||
+        !input.quantity ||
+        input.quantity <= 0)
+    ) {
+      throw new Error(
+        'Informe a posição e a quantidade reintegrada.',
+      )
+    }
+
+    setReturns((current) =>
+      current.map((record) =>
+        record.id === id
+          ? {
+              ...record,
+              status: 'Finalizada',
+              conferenceOutcome:
+                input.outcome,
+              conferencePosition:
+                input.position,
+              conferenceQuantity:
+                input.quantity ?? 0,
+              conferenceResponsible:
+                input.responsible.trim(),
+              conferenceNote:
+                input.note?.trim() || undefined,
+              conferenceAt:
+                new Date().toISOString(),
+            }
+          : record,
+      ),
+    )
+  }
+
   function resetReturnsDemo() {
     setReturns(
       seedReturns.map((record) => ({
@@ -169,6 +227,7 @@ export function ReturnsProvider({
       returns,
       createReturn,
       updateReturnStatus,
+      finalizeReturn,
       resetReturnsDemo,
     }),
     [returns],

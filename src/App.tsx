@@ -8,6 +8,7 @@ import {
   modules,
 } from './config/navigation'
 import { AppLayout } from './layouts/AppLayout'
+import { ConferenciaDevolucoes } from './pages/ConferenciaDevolucoes'
 import { DashboardDevolucoes } from './pages/DashboardDevolucoes'
 import { DashboardEstoque } from './pages/DashboardEstoque'
 import { DevolucoesLista } from './pages/DevolucoesLista'
@@ -113,9 +114,7 @@ function App() {
         <Route
           path="/devolucoes/conferencia"
           element={
-            <DevolucoesLista
-              mode="conference"
-            />
+            <ConferenciaDevolucoes />
           }
         />
 

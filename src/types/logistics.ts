@@ -24,6 +24,10 @@ export type UserRole =
   | 'Operador de Estoque'
   | 'Conferente'
 
+export type ReturnConferenceOutcome =
+  | 'REINTEGRADO'
+  | 'NAO_REINTEGRADO'
+
 export interface Product {
   id: string
   sku: string
@@ -71,8 +75,17 @@ export interface ReturnRecord {
   sku: string
   quantity: number
   reason: string
-  status: 'A revisar' | 'Em conferência' | 'Finalizada'
+  status:
+    | 'A revisar'
+    | 'Em conferência'
+    | 'Finalizada'
   createdAt: string
+  conferenceOutcome?: ReturnConferenceOutcome
+  conferencePosition?: string
+  conferenceQuantity?: number
+  conferenceResponsible?: string
+  conferenceNote?: string
+  conferenceAt?: string
 }
 
 export interface ReceivingRecord {

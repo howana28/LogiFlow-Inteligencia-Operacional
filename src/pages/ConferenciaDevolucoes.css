@@ -1,0 +1,482 @@
+.return-conference-page {
+  width: 100%;
+}
+
+.return-conference-heading {
+  margin-bottom: 26px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.conference-summary {
+  padding-bottom: 4px;
+  text-align: right;
+}
+
+.conference-summary span {
+  display: block;
+  color: #8b9488;
+  font-size: 9px;
+}
+
+.conference-summary strong {
+  display: block;
+  margin-top: 3px;
+  color: #354533;
+  font-size: 18px;
+}
+
+.conference-search {
+  width: min(430px, 100%);
+  height: 42px;
+  margin-bottom: 14px;
+  padding: 0 13px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #d9dfd5;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #849080;
+}
+
+.conference-search input {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #2b382a;
+  font-size: 11px;
+}
+
+.conference-card {
+  overflow: hidden;
+  border: 1px solid #dfe3da;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.conference-card-header {
+  padding: 16px 18px;
+  border-bottom: 1px solid #e8ece4;
+}
+
+.conference-card-header strong {
+  display: block;
+  color: #2b392b;
+  font-size: 11px;
+}
+
+.conference-card-header span {
+  display: block;
+  margin-top: 4px;
+  color: #929a8f;
+  font-size: 8.5px;
+}
+
+.conference-list {
+  padding: 15px 17px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.conference-item {
+  width: 100%;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border: 1px solid #e0e5dd;
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.conference-item:hover {
+  transform: translateY(-1px);
+  border-color: #c4d0bd;
+  background: #fafbf8;
+}
+
+.conference-item-icon {
+  width: 37px;
+  height: 37px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: #e8edf2;
+  color: #657789;
+}
+
+.conference-item-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.conference-item-main strong {
+  display: block;
+  color: #3e4e3c;
+  font-size: 10px;
+}
+
+.conference-item-main span {
+  display: block;
+  margin-top: 3px;
+  color: #778174;
+  font-size: 9px;
+}
+
+.conference-item-main small {
+  display: block;
+  max-width: 620px;
+  margin-top: 4px;
+  overflow: hidden;
+  color: #969e93;
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conference-item-meta {
+  min-width: 120px;
+  text-align: right;
+}
+
+.conference-item-meta strong {
+  display: block;
+  color: #42513f;
+  font-size: 10px;
+}
+
+.conference-item-meta span {
+  display: block;
+  margin-top: 4px;
+  color: #959d92;
+  font-size: 8px;
+}
+
+.conference-empty {
+  min-height: 220px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #83917f;
+  text-align: center;
+}
+
+.conference-empty strong {
+  margin-top: 11px;
+  color: #495847;
+  font-size: 12px;
+}
+
+.conference-empty span {
+  margin-top: 5px;
+  color: #939b90;
+  font-size: 9px;
+}
+
+.conference-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(17, 27, 18, 0.43);
+}
+
+.conference-modal {
+  position: relative;
+  width: min(610px, 96vw);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 29px;
+  border: 1px solid #dce2d8;
+  border-radius: 17px;
+  background: #fbfcf8;
+  box-shadow: 0 24px 70px rgba(23, 34, 24, 0.23);
+}
+
+.conference-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 35px;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #eef1ea;
+  color: #697566;
+  cursor: pointer;
+}
+
+.conference-modal-header {
+  padding-right: 48px;
+  margin-bottom: 19px;
+}
+
+.conference-modal-icon {
+  width: 41px;
+  height: 41px;
+  margin-bottom: 15px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: #e7edf2;
+  color: #607385;
+}
+
+.conference-modal-header > span {
+  color: #718172;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.conference-modal-header h2 {
+  margin: 6px 0 6px;
+  color: #1d281e;
+  font-family: 'Playfair Display', serif;
+  font-size: 27px;
+  font-weight: 600;
+}
+
+.conference-modal-header p {
+  margin: 0;
+  color: #7e887b;
+  font-size: 10px;
+}
+
+.conference-return-summary {
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 8px;
+}
+
+.conference-return-summary > div {
+  padding: 12px;
+  border: 1px solid #e0e5dd;
+  border-radius: 9px;
+  background: #ffffff;
+}
+
+.conference-return-summary span {
+  display: block;
+  color: #929a8f;
+  font-size: 8px;
+}
+
+.conference-return-summary strong {
+  display: block;
+  margin-top: 4px;
+  color: #40503e;
+  font-size: 9.5px;
+  line-height: 1.45;
+}
+
+.conference-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.conference-decision-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.conference-decision {
+  min-height: 116px;
+  padding: 15px;
+  border: 1px solid #dde2da;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #71806d;
+  cursor: pointer;
+  text-align: left;
+}
+
+.conference-decision strong {
+  display: block;
+  margin-top: 10px;
+  color: #465545;
+  font-size: 10px;
+}
+
+.conference-decision span {
+  display: block;
+  margin-top: 5px;
+  color: #8e978b;
+  font-size: 8.5px;
+  line-height: 1.45;
+}
+
+.conference-decision.active.reintegrate {
+  border-color: #9fb693;
+  background: #f0f6eb;
+  color: #5f7a56;
+}
+
+.conference-decision.active.reject {
+  border-color: #d5b1a5;
+  background: #fbf2ee;
+  color: #98624e;
+}
+
+.conference-decision:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.conference-two-columns {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.conference-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.conference-field label {
+  color: #596756;
+  font-size: 8.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.conference-field input,
+.conference-field select,
+.conference-field textarea {
+  width: 100%;
+  border: 1px solid #d7ded3;
+  border-radius: 9px;
+  outline: none;
+  background: #ffffff;
+  color: #293629;
+  font-size: 10.5px;
+}
+
+.conference-field input,
+.conference-field select {
+  min-height: 42px;
+  padding: 0 11px;
+}
+
+.conference-field textarea {
+  min-height: 86px;
+  padding: 11px;
+  resize: vertical;
+}
+
+.conference-field input:focus,
+.conference-field select:focus,
+.conference-field textarea:focus {
+  border-color: #9aad91;
+  box-shadow: 0 0 0 3px rgba(153, 173, 145, 0.13);
+}
+
+.conference-field small {
+  color: #929a8f;
+  font-size: 8px;
+}
+
+.conference-message {
+  padding: 11px 13px;
+  border-radius: 9px;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.conference-message.success {
+  border: 1px solid #c9dcbc;
+  background: #eff6e9;
+  color: #527048;
+}
+
+.conference-message.error {
+  border: 1px solid #e7c8c8;
+  background: #fff3f2;
+  color: #994640;
+}
+
+.conference-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 3px;
+}
+
+.conference-actions button {
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 9.5px;
+  font-weight: 600;
+}
+
+.conference-primary {
+  background: #172318;
+  color: #ffffff;
+}
+
+.conference-secondary {
+  border: 1px solid #d8ded3;
+  background: #ffffff;
+  color: #5e6a5b;
+}
+
+@media (max-width: 650px) {
+  .return-conference-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .conference-summary {
+    text-align: left;
+  }
+
+  .conference-modal-backdrop {
+    padding: 10px;
+  }
+
+  .conference-modal {
+    width: 100%;
+    padding: 23px 18px;
+  }
+
+  .conference-return-summary,
+  .conference-decision-grid,
+  .conference-two-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .conference-actions {
+    flex-direction: column-reverse;
+  }
+
+  .conference-actions button {
+    width: 100%;
+  }
+}
