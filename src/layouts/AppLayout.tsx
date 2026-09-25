@@ -74,9 +74,9 @@ export function AppLayout() {
             <strong>LogiFlow</strong>
 
             <span>
-              Operations
+              Inteligência
               <br />
-              Intelligence
+              Operacional
             </span>
           </div>
         </div>

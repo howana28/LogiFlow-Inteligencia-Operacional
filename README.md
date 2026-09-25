@@ -1,4 +1,4 @@
-# LogiFlow — Operations Intelligence
+# LogiFlow — Inteligência Operacional
 
 Sistema logístico demonstrativo desenvolvido como projeto de portfólio Full Stack, com foco em operações de estoque, logística reversa, recebimento de cargas e administração de usuários.
 
