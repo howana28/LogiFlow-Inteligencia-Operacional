@@ -1,75 +1,190 @@
-# React + TypeScript + Vite
+# LogiFlow — Operations Intelligence
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sistema logístico demonstrativo desenvolvido como projeto de portfólio Full Stack, com foco em operações de estoque, logística reversa, recebimento de cargas e administração de usuários.
 
-Currently, two official plugins are available:
+> Todos os dados exibidos no projeto são fictícios e foram criados exclusivamente para demonstração.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Visão geral
 
-## React Compiler
+O LogiFlow simula uma operação logística integrada em uma interface web moderna e responsiva. O projeto foi construído de forma incremental, com módulos funcionais compartilhando estado e atualizando indicadores em tempo real.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Módulos
 
-## Expanding the ESLint configuration
+#### Estoque
+- Dashboard operacional
+- Entrada de estoque
+- Retirada de estoque
+- Transferência entre posições
+- Histórico de movimentações
+- Mapa interativo do armazém
+- Consulta de posições atuais
+- Detalhes por SKU
+- Alertas de estoque mínimo
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+#### Devoluções
+- Dashboard de logística reversa
+- Registro de nova devolução
+- Fila de revisão
+- Conferência física
+- Reintegração ao estoque
+- Finalização sem reintegração
+- Histórico de devoluções
+- Atualização automática do estoque após reintegração
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+#### Recebimento
+- Dashboard de recebimento
+- Lançamento de ordem de compra
+- Cargas a caminho
+- Conferência previsto x recebido
+- Registro de divergências
+- Endereçamento de itens
+- Recebimentos processados
+- Entrada automática no estoque
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+#### Administração
+- Gestão de usuários
+- Papéis e cargos
+- Status ativo/inativo
+- Matriz de permissões por perfil
+- Busca e filtros
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Stack
 
+- React
+- TypeScript
+- Vite
+- React Router
+- Lucide React
+- Context API
+- LocalStorage
+
+## Arquitetura
+
+A aplicação foi organizada por responsabilidade:
+
+```text
+src/
+├── components/
+├── config/
+├── context/
+├── data/
+├── layouts/
+├── pages/
+├── types/
+├── App.tsx
+└── main.tsx
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Os módulos compartilham dados através de Context API.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Exemplos de integração:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+Devoluções
+→ Conferência
+→ Reintegração
+→ Estoque
+→ Movimentações
+→ Dashboard
 
+Recebimento
+→ Conferência
+→ Endereçamento
+→ Estoque
+→ Movimentações
+→ Dashboard
 ```
+
+## Dados de demonstração
+
+O projeto utiliza dados fictícios de produtos, usuários, devoluções e recebimentos.
+
+Categorias utilizadas:
+- Eletrônicos
+- Acessórios
+- Vestuário
+- Escritório
+
+Os dados alterados durante a navegação são persistidos localmente através de `localStorage`, permitindo demonstrar o fluxo da aplicação sem necessidade de infraestrutura externa.
+
+## Como executar
+
+### Requisitos
+
+- Node.js
+- npm
+
+### Instalação
+
+```bash
+npm install
+```
+
+### Ambiente de desenvolvimento
+
+```bash
+npm run dev
+```
+
+### Build de produção
+
+```bash
+npm run build
+```
+
+## Principais decisões técnicas
+
+- Estado de domínio separado por contexto.
+- Tipagem centralizada para entidades logísticas.
+- Dados de demonstração isolados da interface.
+- Rotas organizadas por módulo.
+- Persistência local para manter o comportamento entre recarregamentos.
+- Componentes e páginas separados por responsabilidade.
+- Fluxos integrados entre módulos em vez de telas independentes.
+
+## Evolução do projeto
+
+O histórico de commits registra a construção incremental do sistema, incluindo:
+
+1. estrutura inicial React + TypeScript;
+2. navegação modular;
+3. dados tipados;
+4. mapa interativo;
+5. posições e detalhes de produto;
+6. entradas e retiradas;
+7. movimentações;
+8. transferências;
+9. dashboard de estoque;
+10. devoluções;
+11. integração devoluções x estoque;
+12. recebimento;
+13. usuários, cargos e permissões.
+
+## Objetivo
+
+Este projeto foi desenvolvido para demonstrar competências em:
+
+- desenvolvimento frontend com React e TypeScript;
+- modelagem de processos operacionais;
+- gerenciamento de estado;
+- integração entre módulos;
+- construção de dashboards;
+- UX para sistemas internos;
+- tipagem e organização de código;
+- evolução incremental de produto.
+
+## Status
+
+Versão demonstrativa funcional para portfólio.
+
+Próximas evoluções planejadas:
+- RBAC aplicado às rotas e ações;
+- autenticação;
+- backend persistente;
+- testes automatizados;
+- integração com API;
+- deploy público.
+
+---
+
+Desenvolvido como projeto de portfólio.
