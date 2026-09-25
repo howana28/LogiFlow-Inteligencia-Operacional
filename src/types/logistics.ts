@@ -88,6 +88,14 @@ export interface ReturnRecord {
   conferenceAt?: string
 }
 
+export interface ReceivingItemLine {
+  id: string
+  sku: string
+  expectedQuantity: number
+  receivedQuantity?: number
+  position?: string
+}
+
 export interface ReceivingRecord {
   id: string
   supplier: string
@@ -98,4 +106,13 @@ export interface ReceivingRecord {
     | 'A caminho'
     | 'Em conferência'
     | 'Processado'
+  purchaseNumber?: string
+  createdAt?: string
+  responsible?: string
+  lines?: ReceivingItemLine[]
+  conferenceStartedAt?: string
+  conferenceFinishedAt?: string
+  receivedUnits?: number
+  discrepancyCount?: number
+  notes?: string
 }

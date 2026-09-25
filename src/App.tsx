@@ -9,15 +9,19 @@ import {
 } from './config/navigation'
 import { AppLayout } from './layouts/AppLayout'
 import { ConferenciaDevolucoes } from './pages/ConferenciaDevolucoes'
+import { ConferenciaRecebimento } from './pages/ConferenciaRecebimento'
 import { DashboardDevolucoes } from './pages/DashboardDevolucoes'
 import { DashboardEstoque } from './pages/DashboardEstoque'
+import { DashboardRecebimento } from './pages/DashboardRecebimento'
 import { DevolucoesLista } from './pages/DevolucoesLista'
 import { EntradaEstoque } from './pages/EntradaEstoque'
+import { LancarCompra } from './pages/LancarCompra'
 import { MapaEstoque } from './pages/MapaEstoque'
 import { ModulePage } from './pages/ModulePage'
 import { MovimentacoesEstoque } from './pages/MovimentacoesEstoque'
 import { NovaDevolucao } from './pages/NovaDevolucao'
 import { PosicoesAtuais } from './pages/PosicoesAtuais'
+import { RecebimentosLista } from './pages/RecebimentosLista'
 import { RetiradaEstoque } from './pages/RetiradaEstoque'
 
 const functionalInventoryRoutes = [
@@ -36,6 +40,14 @@ const functionalReturnsRoutes = [
   '/devolucoes/conferencia',
   '/devolucoes/ultimos',
   '/devolucoes/todas',
+]
+
+const functionalReceivingRoutes = [
+  '/recebimento/dashboard',
+  '/recebimento/lancar',
+  '/recebimento/caminho',
+  '/recebimento/conferencia',
+  '/recebimento/processados',
 ]
 
 function App() {
@@ -136,6 +148,41 @@ function App() {
           }
         />
 
+        <Route
+          path="/recebimento/dashboard"
+          element={<DashboardRecebimento />}
+        />
+
+        <Route
+          path="/recebimento/lancar"
+          element={<LancarCompra />}
+        />
+
+        <Route
+          path="/recebimento/caminho"
+          element={
+            <RecebimentosLista
+              mode="transit"
+            />
+          }
+        />
+
+        <Route
+          path="/recebimento/conferencia"
+          element={
+            <ConferenciaRecebimento />
+          }
+        />
+
+        <Route
+          path="/recebimento/processados"
+          element={
+            <RecebimentosLista
+              mode="processed"
+            />
+          }
+        />
+
         {modules.flatMap((module) =>
           module.items
             .filter(
@@ -143,6 +190,7 @@ function App() {
                 ![
                   ...functionalInventoryRoutes,
                   ...functionalReturnsRoutes,
+                  ...functionalReceivingRoutes,
                 ].includes(item.path),
             )
             .map((item) => (

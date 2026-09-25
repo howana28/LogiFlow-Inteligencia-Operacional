@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { InventoryProvider } from './context/InventoryContext'
+import { ReceivingProvider } from './context/ReceivingContext'
 import { ReturnsProvider } from './context/ReturnsContext'
 import './index.css'
 
@@ -13,7 +14,9 @@ createRoot(
     <BrowserRouter>
       <InventoryProvider>
         <ReturnsProvider>
-          <App />
+          <ReceivingProvider>
+            <App />
+          </ReceivingProvider>
         </ReturnsProvider>
       </InventoryProvider>
     </BrowserRouter>
