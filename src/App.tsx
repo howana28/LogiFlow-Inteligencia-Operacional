@@ -23,6 +23,7 @@ import { NovaDevolucao } from './pages/NovaDevolucao'
 import { PosicoesAtuais } from './pages/PosicoesAtuais'
 import { RecebimentosLista } from './pages/RecebimentosLista'
 import { RetiradaEstoque } from './pages/RetiradaEstoque'
+import { Usuarios } from './pages/Usuarios'
 
 const functionalInventoryRoutes = [
   '/estoque/dashboard',
@@ -210,13 +211,7 @@ function App() {
 
         <Route
           path={administrationNavigation.path}
-          element={
-            <ModulePage
-              eyebrow={administrationNavigation.eyebrow}
-              title={administrationNavigation.title}
-              description={administrationNavigation.description}
-            />
-          }
+          element={<Usuarios />}
         />
 
         <Route

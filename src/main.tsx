@@ -5,6 +5,7 @@ import App from './App'
 import { InventoryProvider } from './context/InventoryContext'
 import { ReceivingProvider } from './context/ReceivingContext'
 import { ReturnsProvider } from './context/ReturnsContext'
+import { UsersProvider } from './context/UsersContext'
 import './index.css'
 
 createRoot(
@@ -15,7 +16,9 @@ createRoot(
       <InventoryProvider>
         <ReturnsProvider>
           <ReceivingProvider>
-            <App />
+            <UsersProvider>
+              <App />
+            </UsersProvider>
           </ReceivingProvider>
         </ReturnsProvider>
       </InventoryProvider>
