@@ -1,5 +1,10 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import {
+  Navigate,
+  Route,
+  Routes,
+} from 'react-router-dom'
 import { AppLayout } from './layouts/AppLayout'
+import { MapaEstoque } from './pages/MapaEstoque'
 import { ModulePage } from './pages/ModulePage'
 import {
   administrationNavigation,
@@ -12,44 +17,79 @@ function App() {
       <Route element={<AppLayout />}>
         <Route
           path="/"
-          element={<Navigate to="/estoque/dashboard" replace />}
+          element={
+            <Navigate
+              to="/estoque/dashboard"
+              replace
+            />
+          }
         />
 
         <Route
           path="/dashboard"
-          element={<Navigate to="/estoque/dashboard" replace />}
+          element={
+            <Navigate
+              to="/estoque/dashboard"
+              replace
+            />
+          }
+        />
+
+        <Route
+          path="/estoque/mapa"
+          element={<MapaEstoque />}
         />
 
         {modules.flatMap((module) =>
-          module.items.map((item) => (
-            <Route
-              key={item.path}
-              path={item.path}
-              element={
-                <ModulePage
-                  eyebrow={item.eyebrow}
-                  title={item.title}
-                  description={item.description}
-                />
-              }
-            />
-          )),
+          module.items
+            .filter(
+              (item) =>
+                item.path !== '/estoque/mapa',
+            )
+            .map((item) => (
+              <Route
+                key={item.path}
+                path={item.path}
+                element={
+                  <ModulePage
+                    eyebrow={item.eyebrow}
+                    title={item.title}
+                    description={
+                      item.description
+                    }
+                  />
+                }
+              />
+            )),
         )}
 
         <Route
-          path={administrationNavigation.path}
+          path={
+            administrationNavigation.path
+          }
           element={
             <ModulePage
-              eyebrow={administrationNavigation.eyebrow}
-              title={administrationNavigation.title}
-              description={administrationNavigation.description}
+              eyebrow={
+                administrationNavigation.eyebrow
+              }
+              title={
+                administrationNavigation.title
+              }
+              description={
+                administrationNavigation.description
+              }
             />
           }
         />
 
         <Route
           path="*"
-          element={<Navigate to="/estoque/dashboard" replace />}
+          element={
+            <Navigate
+              to="/estoque/dashboard"
+              replace
+            />
+          }
         />
       </Route>
     </Routes>
