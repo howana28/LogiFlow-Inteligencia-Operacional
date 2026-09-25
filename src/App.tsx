@@ -7,6 +7,8 @@ import {
   administrationNavigation,
   modules,
 } from './config/navigation'
+import { DemoSessionSwitcher } from './components/DemoSessionSwitcher'
+import { RequirePermission } from './components/RequirePermission'
 import { AppLayout } from './layouts/AppLayout'
 import { ConferenciaDevolucoes } from './pages/ConferenciaDevolucoes'
 import { ConferenciaRecebimento } from './pages/ConferenciaRecebimento'
@@ -53,178 +55,240 @@ const functionalReceivingRoutes = [
 
 function App() {
   return (
-    <Routes>
-      <Route element={<AppLayout />}>
-        <Route
-          path="/"
-          element={
-            <Navigate
-              to="/estoque/dashboard"
-              replace
-            />
-          }
-        />
+    <>
+      <DemoSessionSwitcher />
 
-        <Route
-          path="/dashboard"
-          element={
-            <Navigate
-              to="/estoque/dashboard"
-              replace
-            />
-          }
-        />
-
-        <Route
-          path="/estoque/dashboard"
-          element={<DashboardEstoque />}
-        />
-
-        <Route
-          path="/estoque/entrada"
-          element={<EntradaEstoque />}
-        />
-
-        <Route
-          path="/estoque/retirada"
-          element={<RetiradaEstoque />}
-        />
-
-        <Route
-          path="/estoque/movimentacoes"
-          element={<MovimentacoesEstoque />}
-        />
-
-        <Route
-          path="/estoque/mapa"
-          element={<MapaEstoque />}
-        />
-
-        <Route
-          path="/estoque/posicoes"
-          element={<PosicoesAtuais />}
-        />
-
-        <Route
-          path="/devolucoes/dashboard"
-          element={<DashboardDevolucoes />}
-        />
-
-        <Route
-          path="/devolucoes/nova"
-          element={<NovaDevolucao />}
-        />
-
-        <Route
-          path="/devolucoes/revisar"
-          element={
-            <DevolucoesLista
-              mode="review"
-            />
-          }
-        />
-
-        <Route
-          path="/devolucoes/conferencia"
-          element={
-            <ConferenciaDevolucoes />
-          }
-        />
-
-        <Route
-          path="/devolucoes/ultimos"
-          element={
-            <DevolucoesLista
-              mode="recent"
-            />
-          }
-        />
-
-        <Route
-          path="/devolucoes/todas"
-          element={
-            <DevolucoesLista
-              mode="all"
-            />
-          }
-        />
-
-        <Route
-          path="/recebimento/dashboard"
-          element={<DashboardRecebimento />}
-        />
-
-        <Route
-          path="/recebimento/lancar"
-          element={<LancarCompra />}
-        />
-
-        <Route
-          path="/recebimento/caminho"
-          element={
-            <RecebimentosLista
-              mode="transit"
-            />
-          }
-        />
-
-        <Route
-          path="/recebimento/conferencia"
-          element={
-            <ConferenciaRecebimento />
-          }
-        />
-
-        <Route
-          path="/recebimento/processados"
-          element={
-            <RecebimentosLista
-              mode="processed"
-            />
-          }
-        />
-
-        {modules.flatMap((module) =>
-          module.items
-            .filter(
-              (item) =>
-                ![
-                  ...functionalInventoryRoutes,
-                  ...functionalReturnsRoutes,
-                  ...functionalReceivingRoutes,
-                ].includes(item.path),
-            )
-            .map((item) => (
-              <Route
-                key={item.path}
-                path={item.path}
-                element={
-                  <ModulePage
-                    eyebrow={item.eyebrow}
-                    title={item.title}
-                    description={item.description}
-                  />
-                }
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route
+            path="/"
+            element={
+              <Navigate
+                to="/estoque/dashboard"
+                replace
               />
-            )),
-        )}
+            }
+          />
 
-        <Route
-          path={administrationNavigation.path}
-          element={<Usuarios />}
-        />
+          <Route
+            path="/dashboard"
+            element={
+              <Navigate
+                to="/estoque/dashboard"
+                replace
+              />
+            }
+          />
 
-        <Route
-          path="*"
-          element={
-            <Navigate
-              to="/estoque/dashboard"
-              replace
-            />
-          }
-        />
-      </Route>
-    </Routes>
+          <Route
+            path="/estoque/dashboard"
+            element={
+              <RequirePermission permission="inventory.view">
+                <DashboardEstoque />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/estoque/entrada"
+            element={
+              <RequirePermission permission="inventory.entry">
+                <EntradaEstoque />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/estoque/retirada"
+            element={
+              <RequirePermission permission="inventory.withdrawal">
+                <RetiradaEstoque />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/estoque/movimentacoes"
+            element={
+              <RequirePermission permission="inventory.view">
+                <MovimentacoesEstoque />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/estoque/mapa"
+            element={
+              <RequirePermission permission="inventory.view">
+                <MapaEstoque />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/estoque/posicoes"
+            element={
+              <RequirePermission permission="inventory.view">
+                <PosicoesAtuais />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/devolucoes/dashboard"
+            element={
+              <RequirePermission permission="returns.view">
+                <DashboardDevolucoes />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/devolucoes/nova"
+            element={
+              <RequirePermission permission="returns.manage">
+                <NovaDevolucao />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/devolucoes/revisar"
+            element={
+              <RequirePermission permission="returns.manage">
+                <DevolucoesLista
+                  mode="review"
+                />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/devolucoes/conferencia"
+            element={
+              <RequirePermission permission="returns.conference">
+                <ConferenciaDevolucoes />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/devolucoes/ultimos"
+            element={
+              <RequirePermission permission="returns.view">
+                <DevolucoesLista
+                  mode="recent"
+                />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/devolucoes/todas"
+            element={
+              <RequirePermission permission="returns.view">
+                <DevolucoesLista
+                  mode="all"
+                />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/recebimento/dashboard"
+            element={
+              <RequirePermission permission="receiving.view">
+                <DashboardRecebimento />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/recebimento/lancar"
+            element={
+              <RequirePermission permission="receiving.manage">
+                <LancarCompra />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/recebimento/caminho"
+            element={
+              <RequirePermission permission="receiving.manage">
+                <RecebimentosLista
+                  mode="transit"
+                />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/recebimento/conferencia"
+            element={
+              <RequirePermission permission="receiving.conference">
+                <ConferenciaRecebimento />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="/recebimento/processados"
+            element={
+              <RequirePermission permission="receiving.view">
+                <RecebimentosLista
+                  mode="processed"
+                />
+              </RequirePermission>
+            }
+          />
+
+          {modules.flatMap((module) =>
+            module.items
+              .filter(
+                (item) =>
+                  ![
+                    ...functionalInventoryRoutes,
+                    ...functionalReturnsRoutes,
+                    ...functionalReceivingRoutes,
+                  ].includes(item.path),
+              )
+              .map((item) => (
+                <Route
+                  key={item.path}
+                  path={item.path}
+                  element={
+                    <ModulePage
+                      eyebrow={item.eyebrow}
+                      title={item.title}
+                      description={item.description}
+                    />
+                  }
+                />
+              )),
+          )}
+
+          <Route
+            path={administrationNavigation.path}
+            element={
+              <RequirePermission permission="users.view">
+                <Usuarios />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="*"
+            element={
+              <Navigate
+                to="/estoque/dashboard"
+                replace
+              />
+            }
+          />
+        </Route>
+      </Routes>
+    </>
   )
 }
 

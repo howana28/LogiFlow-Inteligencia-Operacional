@@ -4,6 +4,7 @@ import {
   Mail,
   Save,
   Search,
+  ShieldAlert,
   ShieldCheck,
   UserCheck,
   UserPlus,
@@ -136,10 +137,15 @@ function initials(name: string) {
 export function Usuarios() {
   const {
     users,
+    currentUser,
+    hasPermission,
     createUser,
     updateUser,
     toggleUserStatus,
   } = useUsers()
+
+  const canManageUsers =
+    hasPermission('users.manage')
 
   const [search, setSearch] =
     useState('')
@@ -284,6 +290,14 @@ export function Usuarios() {
   ) {
     event.preventDefault()
 
+    if (!canManageUsers) {
+      setMessage({
+        type: 'error',
+        text: 'Seu perfil possui acesso somente para consulta.',
+      })
+      return
+    }
+
     try {
       if (
         drawerMode === 'edit' &&
@@ -339,15 +353,33 @@ export function Usuarios() {
           </p>
         </div>
 
-        <button
-          type="button"
-          className="users-primary-button"
-          onClick={openCreate}
-        >
-          <UserPlus size={15} />
-          Novo usuário
-        </button>
+        {canManageUsers && (
+          <button
+            type="button"
+            className="users-primary-button"
+            onClick={openCreate}
+          >
+            <UserPlus size={15} />
+            Novo usuário
+          </button>
+        )}
       </div>
+
+      {!canManageUsers && (
+        <div className="users-readonly-banner">
+          <ShieldAlert size={16} />
+
+          <div>
+            <strong>
+              Somente leitura — perfil {currentUser.role}
+            </strong>
+
+            <span>
+              Você pode consultar usuários e permissões, mas não pode criar, editar, ativar ou desativar acessos.
+            </span>
+          </div>
+        </div>
+      )}
 
       <div className="users-kpis">
         <article>
@@ -522,6 +554,11 @@ export function Usuarios() {
                     onClick={() =>
                       openEdit(user)
                     }
+                    className={
+                      canManageUsers
+                        ? ''
+                        : 'read-only-row'
+                    }
                   >
                     <td>
                       <div className="user-identity">
@@ -580,25 +617,49 @@ export function Usuarios() {
                     <td>
                       <button
                         type="button"
+                        disabled={
+                          !canManageUsers ||
+                          user.id ===
+                            currentUser.id
+                        }
                         className={`user-access-button ${
                           user.status ===
                           'ATIVO'
                             ? 'deactivate'
                             : 'activate'
                         }`}
+                        title={
+                          !canManageUsers
+                            ? 'Seu perfil possui acesso somente para consulta'
+                            : user.id ===
+                                currentUser.id
+                              ? 'Troque a sessão demo antes de desativar este usuário'
+                              : undefined
+                        }
                         onClick={(
                           event,
                         ) => {
                           event.stopPropagation()
+
+                          if (
+                            !canManageUsers ||
+                            user.id ===
+                              currentUser.id
+                          ) {
+                            return
+                          }
+
                           toggleUserStatus(
                             user.id,
                           )
                         }}
                       >
-                        {user.status ===
-                        'ATIVO'
-                          ? 'Desativar'
-                          : 'Ativar'}
+                        {!canManageUsers
+                          ? 'Bloqueado'
+                          : user.status ===
+                              'ATIVO'
+                            ? 'Desativar'
+                            : 'Ativar'}
                       </button>
                     </td>
                   </tr>
@@ -647,7 +708,9 @@ export function Usuarios() {
                 {drawerMode ===
                 'create'
                   ? 'NOVO ACESSO'
-                  : 'GESTÃO DE ACESSO'}
+                  : canManageUsers
+                    ? 'GESTÃO DE ACESSO'
+                    : 'CONSULTA DE ACESSO'}
               </span>
 
               <h2>
@@ -661,7 +724,9 @@ export function Usuarios() {
                 {drawerMode ===
                 'create'
                   ? 'Cadastre o usuário e defina o papel que determinará suas permissões.'
-                  : 'Edite os dados, o status e o papel atribuído ao usuário.'}
+                  : canManageUsers
+                    ? 'Edite os dados, o status e o papel atribuído ao usuário.'
+                    : `Consulta em modo somente leitura. O perfil ${currentUser.role} não possui permissão para gerenciar usuários.`}
               </p>
             </div>
 
@@ -669,12 +734,23 @@ export function Usuarios() {
               className="users-form"
               onSubmit={handleSubmit}
             >
+              {!canManageUsers && (
+                <div className="users-drawer-readonly">
+                  <LockKeyhole size={14} />
+
+                  <span>
+                    Campos bloqueados para edição nesta sessão demo.
+                  </span>
+                </div>
+              )}
+
               <div className="users-field">
                 <label>Nome</label>
 
                 <input
                   value={form.name}
                   disabled={
+                    !canManageUsers ||
                     message?.type ===
                     'success'
                   }
@@ -698,6 +774,7 @@ export function Usuarios() {
                     type="email"
                     value={form.email}
                     disabled={
+                      !canManageUsers ||
                       message?.type ===
                       'success'
                     }
@@ -719,6 +796,7 @@ export function Usuarios() {
                   <select
                     value={form.role}
                     disabled={
+                      !canManageUsers ||
                       message?.type ===
                       'success'
                     }
@@ -749,6 +827,7 @@ export function Usuarios() {
                   <select
                     value={form.status}
                     disabled={
+                      !canManageUsers ||
                       message?.type ===
                       'success'
                     }
@@ -882,16 +961,20 @@ export function Usuarios() {
                         closeDrawer
                       }
                     >
-                      Cancelar
+                      {canManageUsers
+                        ? 'Cancelar'
+                        : 'Fechar'}
                     </button>
 
-                    <button
-                      type="submit"
-                      className="users-primary-button"
-                    >
-                      <Save size={14} />
-                      Salvar usuário
-                    </button>
+                    {canManageUsers && (
+                      <button
+                        type="submit"
+                        className="users-primary-button"
+                      >
+                        <Save size={14} />
+                        Salvar usuário
+                      </button>
+                    )}
                   </>
                 )}
               </div>

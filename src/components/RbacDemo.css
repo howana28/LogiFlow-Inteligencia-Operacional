@@ -1,0 +1,263 @@
+.demo-session-switcher {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 120;
+}
+
+.demo-session-trigger {
+  min-width: 210px;
+  padding: 9px 10px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #ccd5c7;
+  border-radius: 13px;
+  background: rgba(250, 252, 247, 0.96);
+  color: #334332;
+  box-shadow: 0 12px 35px rgba(21, 34, 22, 0.14);
+  cursor: pointer;
+  text-align: left;
+  backdrop-filter: blur(8px);
+}
+
+.demo-session-avatar,
+.demo-session-option-avatar {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e4efc7;
+  color: #263626;
+  font-weight: 800;
+}
+
+.demo-session-avatar {
+  width: 34px;
+  height: 34px;
+  font-size: 8.5px;
+}
+
+.demo-session-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.demo-session-copy small {
+  display: block;
+  color: #899486;
+  font-size: 6.8px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.demo-session-copy strong {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  color: #344332;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.demo-session-copy > span {
+  display: block;
+  margin-top: 2px;
+  color: #748170;
+  font-size: 7.5px;
+}
+
+.demo-session-trigger > svg {
+  color: #7c8879;
+  transition: transform 0.18s ease;
+}
+
+.demo-session-trigger > svg.open {
+  transform: rotate(180deg);
+}
+
+.demo-session-menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 9px);
+  width: 280px;
+  overflow: hidden;
+  border: 1px solid #d4dbd0;
+  border-radius: 13px;
+  background: #fbfcf8;
+  box-shadow: 0 18px 50px rgba(21, 34, 22, 0.18);
+}
+
+.demo-session-menu-heading {
+  padding: 12px 13px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border-bottom: 1px solid #e6eae3;
+  color: #61735c;
+}
+
+.demo-session-menu-heading strong {
+  display: block;
+  color: #394837;
+  font-size: 9px;
+}
+
+.demo-session-menu-heading span {
+  display: block;
+  margin-top: 2px;
+  color: #929a8f;
+  font-size: 7.5px;
+}
+
+.demo-session-options {
+  padding: 7px;
+}
+
+.demo-session-options button {
+  width: 100%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border-radius: 9px;
+  background: transparent;
+  color: #41503f;
+  cursor: pointer;
+  text-align: left;
+}
+
+.demo-session-options button:hover,
+.demo-session-options button.active {
+  background: #eff4e9;
+}
+
+.demo-session-option-avatar {
+  width: 29px;
+  height: 29px;
+  font-size: 7.5px;
+}
+
+.demo-session-options button > span:nth-child(2) {
+  min-width: 0;
+  flex: 1;
+}
+
+.demo-session-options strong {
+  display: block;
+  font-size: 8.5px;
+}
+
+.demo-session-options small {
+  display: block;
+  margin-top: 2px;
+  color: #8d968a;
+  font-size: 7px;
+}
+
+.demo-session-options button > svg {
+  color: #65805d;
+}
+
+.demo-session-hint {
+  padding: 10px 13px;
+  border-top: 1px solid #e6eae3;
+  background: #f6f8f3;
+  color: #879183;
+  font-size: 7.4px;
+  line-height: 1.45;
+}
+
+.access-denied-page {
+  min-height: 65vh;
+  display: grid;
+  place-items: center;
+  padding: 30px;
+}
+
+.access-denied-card {
+  width: min(520px, 100%);
+  padding: 34px;
+  border: 1px solid #dfe4db;
+  border-radius: 16px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.access-denied-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #f2e9dd;
+  color: #8c6743;
+}
+
+.access-denied-card h1 {
+  margin: 8px 0 9px;
+  color: #223022;
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.access-denied-card p {
+  max-width: 430px;
+  margin: 0 auto;
+  color: #778274;
+  font-size: 10px;
+  line-height: 1.65;
+}
+
+.access-denied-permission {
+  width: fit-content;
+  margin: 19px auto;
+  padding: 9px 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e2e6de;
+  border-radius: 9px;
+  background: #f8f9f6;
+  color: #7d887a;
+  font-size: 8px;
+}
+
+.access-denied-permission strong {
+  color: #50604d;
+}
+
+.access-denied-card > button {
+  min-height: 40px;
+  padding: 0 15px;
+  border-radius: 9px;
+  background: #172318;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.drawer-actions button:disabled,
+.users-page button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+@media (max-width: 700px) {
+  .demo-session-switcher {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .demo-session-trigger {
+    min-width: 190px;
+  }
+
+  .demo-session-menu {
+    width: 265px;
+  }
+}

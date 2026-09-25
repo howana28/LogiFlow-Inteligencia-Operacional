@@ -72,6 +72,13 @@ interface UpdateUserInput {
 
 interface UsersContextValue {
   users: SystemUser[]
+  currentUser: SystemUser
+  setCurrentUser: (
+    id: string,
+  ) => void
+  hasPermission: (
+    permission: string,
+  ) => boolean
   createUser: (
     input: CreateUserInput,
   ) => SystemUser
@@ -87,6 +94,9 @@ interface UsersContextValue {
 
 const USERS_STORAGE_KEY =
   'logiflow-demo-users'
+
+const CURRENT_USER_STORAGE_KEY =
+  'logiflow-demo-current-user'
 
 const UsersContext =
   createContext<UsersContextValue | null>(
@@ -136,6 +146,25 @@ function readStorage<T>(
 const normalizedSeed =
   normalizeUsers(seedUsers)
 
+function defaultUserId(
+  users: SystemUser[],
+) {
+  return (
+    users.find(
+      (user) =>
+        user.role ===
+          'Administrador' &&
+        user.status === 'ATIVO',
+    )?.id ??
+    users.find(
+      (user) =>
+        user.status === 'ATIVO',
+    )?.id ??
+    users[0]?.id ??
+    ''
+  )
+}
+
 export function UsersProvider({
   children,
 }: {
@@ -151,12 +180,79 @@ export function UsersProvider({
       ),
     )
 
+  const [
+    currentUserId,
+    setCurrentUserId,
+  ] = useState<string>(() =>
+    readStorage(
+      CURRENT_USER_STORAGE_KEY,
+      defaultUserId(normalizedSeed),
+    ),
+  )
+
   useEffect(() => {
     localStorage.setItem(
       USERS_STORAGE_KEY,
       JSON.stringify(users),
     )
   }, [users])
+
+  useEffect(() => {
+    localStorage.setItem(
+      CURRENT_USER_STORAGE_KEY,
+      JSON.stringify(currentUserId),
+    )
+  }, [currentUserId])
+
+  const currentUser =
+    users.find(
+      (user) =>
+        user.id === currentUserId,
+    ) ??
+    users.find(
+      (user) =>
+        user.role ===
+          'Administrador' &&
+        user.status === 'ATIVO',
+    ) ??
+    users.find(
+      (user) =>
+        user.status === 'ATIVO',
+    ) ??
+    users[0]
+
+  function setCurrentUser(id: string) {
+    const user = users.find(
+      (item) => item.id === id,
+    )
+
+    if (!user) {
+      throw new Error(
+        'Usuário não encontrado.',
+      )
+    }
+
+    if (user.status !== 'ATIVO') {
+      throw new Error(
+        'Usuários inativos não podem iniciar uma sessão demo.',
+      )
+    }
+
+    setCurrentUserId(user.id)
+  }
+
+  function hasPermission(
+    permission: string,
+  ) {
+    return Boolean(
+      currentUser &&
+        currentUser.status ===
+          'ATIVO' &&
+        currentUser.permissions.includes(
+          permission,
+        ),
+    )
+  }
 
   function validateEmail(
     email: string,
@@ -274,25 +370,42 @@ export function UsersProvider({
   }
 
   function resetUsersDemo() {
-    setUsers(
+    const resetUsers =
       normalizedSeed.map((user) => ({
         ...user,
         permissions: [
           ...user.permissions,
         ],
-      })),
+      }))
+
+    setUsers(resetUsers)
+    setCurrentUserId(
+      defaultUserId(resetUsers),
+    )
+  }
+
+  if (!currentUser) {
+    throw new Error(
+      'Nenhum usuário demo disponível.',
     )
   }
 
   const value = useMemo(
     () => ({
       users,
+      currentUser,
+      setCurrentUser,
+      hasPermission,
       createUser,
       updateUser,
       toggleUserStatus,
       resetUsersDemo,
     }),
-    [users],
+    [
+      users,
+      currentUser,
+      currentUserId,
+    ],
   )
 
   return (

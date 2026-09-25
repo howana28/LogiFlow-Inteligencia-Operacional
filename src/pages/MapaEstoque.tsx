@@ -10,6 +10,7 @@ import {
 import { useMemo, useState } from 'react'
 import { TransferenciaEstoqueModal } from '../components/TransferenciaEstoqueModal'
 import { useInventory } from '../context/InventoryContext'
+import { useUsers } from '../context/UsersContext'
 import type { InventoryPosition } from '../types/logistics'
 import './MapaEstoque.css'
 
@@ -94,6 +95,8 @@ export function MapaEstoque() {
     positions,
     movements,
   } = useInventory()
+
+  const { hasPermission } = useUsers()
 
   const [selectedStreet, setSelectedStreet] =
     useState<string | null>(null)
@@ -210,6 +213,13 @@ export function MapaEstoque() {
   }
 
   function openTransfer() {
+    if (!hasPermission('inventory.transfer')) {
+      setActionMessage(
+        'Seu perfil não possui permissão para transferir estoque.',
+      )
+      return
+    }
+
     if (!selectedPosition?.data) {
       return
     }
@@ -957,8 +967,20 @@ export function MapaEstoque() {
                       <button
                         type="button"
                         className="secondary-action"
+                        disabled={
+                          !hasPermission(
+                            'inventory.transfer',
+                          )
+                        }
                         onClick={
                           openTransfer
+                        }
+                        title={
+                          hasPermission(
+                            'inventory.transfer',
+                          )
+                            ? 'Transferir produto'
+                            : 'Seu perfil não possui permissão para transferir estoque'
                         }
                       >
                         Transferir
