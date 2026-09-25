@@ -715,3 +715,113 @@
     width: 100%;
   }
 }
+/* ===== Ajuste sutil de legibilidade ===== */
+
+.inventory-page-header .page-eyebrow {
+  font-size: 10px;
+}
+
+.inventory-page-header h1 {
+  font-size: 38px;
+  line-height: 1.08;
+}
+
+.inventory-page-header .page-description {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.inventory-summary span {
+  font-size: 11px;
+}
+
+.inventory-summary strong {
+  font-size: 18px;
+}
+
+.inventory-search input {
+  font-size: 12px;
+}
+
+.occupancy-legend span {
+  font-size: 10px;
+}
+
+.street-header > div:first-child span {
+  font-size: 9px;
+}
+
+.street-header > div:first-child strong {
+  font-size: 20px;
+}
+
+.street-occupancy strong {
+  font-size: 18px;
+}
+
+.street-occupancy span {
+  font-size: 9px;
+}
+
+.street-stats {
+  font-size: 10px;
+}
+
+.warehouse-position strong {
+  font-size: 13px;
+}
+
+.warehouse-position span {
+  font-size: 9.5px;
+}
+
+.warehouse-position small {
+  font-size: 8.5px;
+  line-height: 1.4;
+}
+
+.drawer-heading > span {
+  font-size: 9px;
+}
+
+.drawer-heading h2 {
+  font-size: 29px;
+}
+
+.drawer-heading p {
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.position-occupancy-card span,
+.drawer-info-list span,
+.drawer-section-title span {
+  font-size: 9px;
+}
+
+.position-occupancy-card strong,
+.drawer-info-list strong {
+  font-size: 11px;
+}
+
+.last-movement strong {
+  font-size: 10px;
+}
+
+.last-movement span,
+.last-movement small,
+.empty-movement,
+.empty-position-card span,
+.drawer-action-message {
+  font-size: 8.5px;
+  line-height: 1.5;
+}
+
+.empty-position-card strong {
+  font-size: 11px;
+}
+
+.empty-position-card button,
+.drawer-actions button {
+  font-size: 9px;
+}

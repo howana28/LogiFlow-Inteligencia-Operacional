@@ -11,12 +11,14 @@ import { AppLayout } from './layouts/AppLayout'
 import { EntradaEstoque } from './pages/EntradaEstoque'
 import { MapaEstoque } from './pages/MapaEstoque'
 import { ModulePage } from './pages/ModulePage'
+import { MovimentacoesEstoque } from './pages/MovimentacoesEstoque'
 import { PosicoesAtuais } from './pages/PosicoesAtuais'
 import { RetiradaEstoque } from './pages/RetiradaEstoque'
 
 const functionalInventoryRoutes = [
   '/estoque/entrada',
   '/estoque/retirada',
+  '/estoque/movimentacoes',
   '/estoque/mapa',
   '/estoque/posicoes',
 ]
@@ -27,22 +29,12 @@ function App() {
       <Route element={<AppLayout />}>
         <Route
           path="/"
-          element={
-            <Navigate
-              to="/estoque/dashboard"
-              replace
-            />
-          }
+          element={<Navigate to="/estoque/dashboard" replace />}
         />
 
         <Route
           path="/dashboard"
-          element={
-            <Navigate
-              to="/estoque/dashboard"
-              replace
-            />
-          }
+          element={<Navigate to="/estoque/dashboard" replace />}
         />
 
         <Route
@@ -53,6 +45,11 @@ function App() {
         <Route
           path="/estoque/retirada"
           element={<RetiradaEstoque />}
+        />
+
+        <Route
+          path="/estoque/movimentacoes"
+          element={<MovimentacoesEstoque />}
         />
 
         <Route
@@ -79,15 +76,9 @@ function App() {
                 path={item.path}
                 element={
                   <ModulePage
-                    eyebrow={
-                      item.eyebrow
-                    }
-                    title={
-                      item.title
-                    }
-                    description={
-                      item.description
-                    }
+                    eyebrow={item.eyebrow}
+                    title={item.title}
+                    description={item.description}
                   />
                 }
               />
@@ -95,32 +86,19 @@ function App() {
         )}
 
         <Route
-          path={
-            administrationNavigation.path
-          }
+          path={administrationNavigation.path}
           element={
             <ModulePage
-              eyebrow={
-                administrationNavigation.eyebrow
-              }
-              title={
-                administrationNavigation.title
-              }
-              description={
-                administrationNavigation.description
-              }
+              eyebrow={administrationNavigation.eyebrow}
+              title={administrationNavigation.title}
+              description={administrationNavigation.description}
             />
           }
         />
 
         <Route
           path="*"
-          element={
-            <Navigate
-              to="/estoque/dashboard"
-              replace
-            />
-          }
+          element={<Navigate to="/estoque/dashboard" replace />}
         />
       </Route>
     </Routes>
