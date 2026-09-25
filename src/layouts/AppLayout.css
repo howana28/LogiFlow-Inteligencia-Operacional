@@ -8,3 +8,12 @@
   height: 0;
   display: none;
 }
+
+.portfolio-note {
+  flex-shrink: 0;
+  margin: 28px 9px 0;
+}
+
+.sidebar-footer {
+  flex-shrink: 0;
+}

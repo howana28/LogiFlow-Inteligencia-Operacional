@@ -8,11 +8,7 @@ import {
   PackageSearch,
   X,
 } from 'lucide-react'
-import {
-  inventoryPositions,
-  movements,
-  products,
-} from '../data/mockData'
+import { useInventory } from '../context/InventoryContext'
 import type {
   InventoryMovement,
   MovementType,
@@ -78,6 +74,12 @@ export function ProductDetailsDrawer({
   sku,
   onClose,
 }: ProductDetailsDrawerProps) {
+  const {
+    products,
+    positions,
+    movements,
+  } = useInventory()
+
   if (!sku) {
     return null
   }
@@ -90,36 +92,39 @@ export function ProductDetailsDrawer({
     return null
   }
 
-  const positions =
-    inventoryPositions.filter(
+  const productPositions =
+    positions.filter(
       (position) =>
         position.sku === product.sku,
     )
 
-  const recentMovements = movements
-    .filter(
-      (movement) =>
-        movement.sku === product.sku,
-    )
-    .sort(
-      (a, b) =>
-        new Date(
-          b.createdAt,
-        ).getTime() -
-        new Date(
-          a.createdAt,
-        ).getTime(),
-    )
-    .slice(0, 5)
+  const recentMovements =
+    movements
+      .filter(
+        (movement) =>
+          movement.sku ===
+          product.sku,
+      )
+      .sort(
+        (a, b) =>
+          new Date(
+            b.createdAt,
+          ).getTime() -
+          new Date(
+            a.createdAt,
+          ).getTime(),
+      )
+      .slice(0, 5)
 
-  const totalUnits = positions.reduce(
-    (total, position) =>
-      total + position.quantity,
-    0,
-  )
+  const totalUnits =
+    productPositions.reduce(
+      (total, position) =>
+        total + position.quantity,
+      0,
+    )
 
   const totalCapacity =
-    positions.reduce(
+    productPositions.reduce(
       (total, position) =>
         total + position.capacity,
       0,
@@ -203,11 +208,9 @@ export function ProductDetailsDrawer({
         <div className="product-metrics">
           <div>
             <Boxes size={17} />
-
             <span>
               Estoque total
             </span>
-
             <strong>
               {totalUnits} un.
             </strong>
@@ -215,13 +218,11 @@ export function ProductDetailsDrawer({
 
           <div>
             <MapPin size={17} />
-
-            <span>
-              Posições
-            </span>
-
+            <span>Posições</span>
             <strong>
-              {positions.length}
+              {
+                productPositions.length
+              }
             </strong>
           </div>
 
@@ -229,11 +230,9 @@ export function ProductDetailsDrawer({
             <CircleDollarSign
               size={17}
             />
-
             <span>
               Valor em estoque
             </span>
-
             <strong>
               {currencyFormatter.format(
                 stockValue,
@@ -247,7 +246,6 @@ export function ProductDetailsDrawer({
             <span>
               Ocupação consolidada
             </span>
-
             <strong>
               {occupancy}%
             </strong>
@@ -278,8 +276,9 @@ export function ProductDetailsDrawer({
           </div>
 
           <div className="product-position-list">
-            {positions.length > 0 ? (
-              positions.map(
+            {productPositions.length >
+            0 ? (
+              productPositions.map(
                 (position) => (
                   <div
                     key={

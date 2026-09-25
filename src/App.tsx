@@ -8,9 +8,18 @@ import {
   modules,
 } from './config/navigation'
 import { AppLayout } from './layouts/AppLayout'
+import { EntradaEstoque } from './pages/EntradaEstoque'
 import { MapaEstoque } from './pages/MapaEstoque'
 import { ModulePage } from './pages/ModulePage'
 import { PosicoesAtuais } from './pages/PosicoesAtuais'
+import { RetiradaEstoque } from './pages/RetiradaEstoque'
+
+const functionalInventoryRoutes = [
+  '/estoque/entrada',
+  '/estoque/retirada',
+  '/estoque/mapa',
+  '/estoque/posicoes',
+]
 
 function App() {
   return (
@@ -37,6 +46,16 @@ function App() {
         />
 
         <Route
+          path="/estoque/entrada"
+          element={<EntradaEstoque />}
+        />
+
+        <Route
+          path="/estoque/retirada"
+          element={<RetiradaEstoque />}
+        />
+
+        <Route
           path="/estoque/mapa"
           element={<MapaEstoque />}
         />
@@ -50,10 +69,7 @@ function App() {
           module.items
             .filter(
               (item) =>
-                ![
-                  '/estoque/mapa',
-                  '/estoque/posicoes',
-                ].includes(
+                !functionalInventoryRoutes.includes(
                   item.path,
                 ),
             )

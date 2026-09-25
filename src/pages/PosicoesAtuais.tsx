@@ -10,10 +10,7 @@ import {
   useState,
 } from 'react'
 import { ProductDetailsDrawer } from '../components/ProductDetailsDrawer'
-import {
-  inventoryPositions,
-  products,
-} from '../data/mockData'
+import { useInventory } from '../context/InventoryContext'
 import './PosicoesAtuais.css'
 
 const currencyFormatter =
@@ -23,6 +20,12 @@ const currencyFormatter =
   })
 
 export function PosicoesAtuais() {
+  const {
+    products,
+    positions:
+      inventoryPositions,
+  } = useInventory()
+
   const [search, setSearch] =
     useState('')
 
@@ -68,7 +71,10 @@ export function PosicoesAtuais() {
             product.unitCost,
         }
       }),
-    [],
+    [
+      products,
+      inventoryPositions,
+    ],
   )
 
   const categories = [
@@ -153,7 +159,9 @@ export function PosicoesAtuais() {
       <div className="positions-kpis">
         <div>
           <PackageSearch size={18} />
-          <span>SKUs cadastrados</span>
+          <span>
+            SKUs cadastrados
+          </span>
           <strong>
             {products.length}
           </strong>
@@ -161,7 +169,9 @@ export function PosicoesAtuais() {
 
         <div>
           <Boxes size={18} />
-          <span>Unidades em estoque</span>
+          <span>
+            Unidades em estoque
+          </span>
           <strong>
             {totalUnits.toLocaleString(
               'pt-BR',
@@ -171,7 +181,9 @@ export function PosicoesAtuais() {
 
         <div>
           <MapPin size={18} />
-          <span>Posições ocupadas</span>
+          <span>
+            Posições ocupadas
+          </span>
           <strong>
             {
               inventoryPositions.length
@@ -183,7 +195,9 @@ export function PosicoesAtuais() {
           <CircleDollarSign
             size={18}
           />
-          <span>Valor em estoque</span>
+          <span>
+            Valor em estoque
+          </span>
           <strong>
             {currencyFormatter.format(
               totalValue,
