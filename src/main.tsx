@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { InventoryProvider } from './context/InventoryContext'
+import { ReturnsProvider } from './context/ReturnsContext'
 import './index.css'
 
 createRoot(
@@ -11,7 +12,9 @@ createRoot(
   <StrictMode>
     <BrowserRouter>
       <InventoryProvider>
-        <App />
+        <ReturnsProvider>
+          <App />
+        </ReturnsProvider>
       </InventoryProvider>
     </BrowserRouter>
   </StrictMode>,

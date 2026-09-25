@@ -8,11 +8,14 @@ import {
   modules,
 } from './config/navigation'
 import { AppLayout } from './layouts/AppLayout'
+import { DashboardDevolucoes } from './pages/DashboardDevolucoes'
 import { DashboardEstoque } from './pages/DashboardEstoque'
+import { DevolucoesLista } from './pages/DevolucoesLista'
 import { EntradaEstoque } from './pages/EntradaEstoque'
 import { MapaEstoque } from './pages/MapaEstoque'
 import { ModulePage } from './pages/ModulePage'
 import { MovimentacoesEstoque } from './pages/MovimentacoesEstoque'
+import { NovaDevolucao } from './pages/NovaDevolucao'
 import { PosicoesAtuais } from './pages/PosicoesAtuais'
 import { RetiradaEstoque } from './pages/RetiradaEstoque'
 
@@ -23,6 +26,15 @@ const functionalInventoryRoutes = [
   '/estoque/movimentacoes',
   '/estoque/mapa',
   '/estoque/posicoes',
+]
+
+const functionalReturnsRoutes = [
+  '/devolucoes/dashboard',
+  '/devolucoes/nova',
+  '/devolucoes/revisar',
+  '/devolucoes/conferencia',
+  '/devolucoes/ultimos',
+  '/devolucoes/todas',
 ]
 
 function App() {
@@ -79,13 +91,60 @@ function App() {
           element={<PosicoesAtuais />}
         />
 
+        <Route
+          path="/devolucoes/dashboard"
+          element={<DashboardDevolucoes />}
+        />
+
+        <Route
+          path="/devolucoes/nova"
+          element={<NovaDevolucao />}
+        />
+
+        <Route
+          path="/devolucoes/revisar"
+          element={
+            <DevolucoesLista
+              mode="review"
+            />
+          }
+        />
+
+        <Route
+          path="/devolucoes/conferencia"
+          element={
+            <DevolucoesLista
+              mode="conference"
+            />
+          }
+        />
+
+        <Route
+          path="/devolucoes/ultimos"
+          element={
+            <DevolucoesLista
+              mode="recent"
+            />
+          }
+        />
+
+        <Route
+          path="/devolucoes/todas"
+          element={
+            <DevolucoesLista
+              mode="all"
+            />
+          }
+        />
+
         {modules.flatMap((module) =>
           module.items
             .filter(
               (item) =>
-                !functionalInventoryRoutes.includes(
-                  item.path,
-                ),
+                ![
+                  ...functionalInventoryRoutes,
+                  ...functionalReturnsRoutes,
+                ].includes(item.path),
             )
             .map((item) => (
               <Route
