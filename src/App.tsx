@@ -8,6 +8,7 @@ import {
   modules,
 } from './config/navigation'
 import { AppLayout } from './layouts/AppLayout'
+import { DashboardEstoque } from './pages/DashboardEstoque'
 import { EntradaEstoque } from './pages/EntradaEstoque'
 import { MapaEstoque } from './pages/MapaEstoque'
 import { ModulePage } from './pages/ModulePage'
@@ -16,6 +17,7 @@ import { PosicoesAtuais } from './pages/PosicoesAtuais'
 import { RetiradaEstoque } from './pages/RetiradaEstoque'
 
 const functionalInventoryRoutes = [
+  '/estoque/dashboard',
   '/estoque/entrada',
   '/estoque/retirada',
   '/estoque/movimentacoes',
@@ -29,12 +31,27 @@ function App() {
       <Route element={<AppLayout />}>
         <Route
           path="/"
-          element={<Navigate to="/estoque/dashboard" replace />}
+          element={
+            <Navigate
+              to="/estoque/dashboard"
+              replace
+            />
+          }
         />
 
         <Route
           path="/dashboard"
-          element={<Navigate to="/estoque/dashboard" replace />}
+          element={
+            <Navigate
+              to="/estoque/dashboard"
+              replace
+            />
+          }
+        />
+
+        <Route
+          path="/estoque/dashboard"
+          element={<DashboardEstoque />}
         />
 
         <Route
@@ -98,7 +115,12 @@ function App() {
 
         <Route
           path="*"
-          element={<Navigate to="/estoque/dashboard" replace />}
+          element={
+            <Navigate
+              to="/estoque/dashboard"
+              replace
+            />
+          }
         />
       </Route>
     </Routes>
